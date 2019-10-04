@@ -1,0 +1,37 @@
+- name: describe unicorn.rb
+  template:
+    src: roles/unicorn/templates/unicorn.rb.j2
+    dest: /home/ec2-user/app/config/unicorn.rb
+  tags:
+    - unicorn
+
+- name: describe unicorn.rake
+  template:
+    src: roles/unicorn/templates/unicorn.rake.j2
+    dest: /home/ec2-user/app/lib/tasks/unicorn.rake
+  tags:
+    - unicorn
+
+- name: bundle install
+  shell: bundle install
+  args:
+    chdir: /home/ec2-user/app
+  tags:
+    - unicorn
+    - bundler
+
+- name: rake db:migrate
+  shell: bundle exec rails db:migrate
+  args:
+    chdir: /home/ec2-user/app
+  tags:
+    - unicorn
+    - bundler
+
+- name: unicorn start
+  shell: bundle exec rake unicorn:start
+  args:
+    chdir: /home/ec2-user/app
+  tags:
+    - unicorn
+    - bundler
