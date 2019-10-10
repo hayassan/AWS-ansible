@@ -2,7 +2,6 @@
   roles:
     - git
     - nginx
-    - unicorn
     - nodejs
     - ruby
     - mysql
